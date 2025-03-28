@@ -20,6 +20,21 @@ class MyApp extends StatelessWidget {
   }
 }
 
+Color _getCategoryColor(String categoryName) {
+  switch (categoryName.toLowerCase()) {
+    case 'технологи':
+      return Colors.blue;
+    case 'спорт':
+      return Colors.green;
+    case 'эрүүл мэнд':
+      return Colors.red;
+    case 'урлаг':
+      return Colors.orange;
+    default:
+      return Colors.grey; // Default color if no match
+  }
+}
+
 class MainNavigationScreen extends StatefulWidget {
   @override
   _MainNavigationScreenState createState() => _MainNavigationScreenState();
@@ -323,15 +338,50 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: ListTile(
                         contentPadding: EdgeInsets.all(8.0),
                         leading: _buildArticleImage(article['image']),
-                        title: Text(
-                          article['title'],
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ), // Padding inside the box
+                              decoration: BoxDecoration(
+                                color:
+                                    Colors
+                                        .blue[100], // Background color of the box
+                                borderRadius: BorderRadius.circular(
+                                  4,
+                                ), // Rounded corners
+                                border: Border.all(
+                                  color: _getCategoryColor(
+                                    article['category']['name'],
+                                  ), // Border color
+                                  width: 1, // Border width
+                                ),
+                              ),
+                              child: Text(
+                                article['category']['name'],
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: _getCategoryColor(
+                                    article['category']['name'],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
+
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Text(
+                              article['title'],
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                             Text(
                               article['source'],
                               style: TextStyle(
